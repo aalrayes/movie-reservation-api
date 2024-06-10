@@ -1,6 +1,7 @@
 # movie-reservation-api
 
 Objective:
+
 Build a simple RESTful API using Node.js, Express.js, and MongoDB to manage a movie reservation system.
 
 Requirements:
@@ -18,17 +19,46 @@ The endpoint should take the movie ID, time slot ID, and the number of people to
 
 - Ensure that the reservation does not exceed the available capacity of the time slot.
 
-Update the booked count for the reserved time slot.
+- Update the booked count for the reserved time slot.
 
-Technical Stack:
-- Node.js
-- Express.js
-- MongoDB
 
-Evaluation Criteria:
-Candidates will be evaluated based on the following criteria:
-- Functionality: Does the API meet the specified requirements? Are all endpoints working as expected?
-- Code Quality: Is the code well-structured, modular, and easy to understand? Does it follow best practices?
-- Documentation: Is there clear documentation on how to run and test the application?
-- Error Handling: Does the application handle errors gracefully and provide meaningful error messages?
-- Data Integrity: Ensure data consistency and integrity in MongoDB.
+## Before Starting 
+
+- Install Node js 
+- Install mongodb community edition or open an account in MongoDB Atlas
+- install depenancies, go to the root folder and type 
+```
+npm install 
+```
+
+- Create a `.env` file at the root directury and add the URI to your mongo db instance 
+```
+DB_URI = 
+```
+## Getting Started
+Run the server with `node ./server.js`
+
+## Endpoints
+
+### List All Movies
+```
+curl --location 'localhost:8000/v1/movies/'
+```
+
+### Check Availability
+Get the `movie id` and `time slot id` from the `List All Movies` endpoint 
+
+```
+curl --location 'localhost:8000/v1/movies/<movie id>/timeslots/<time slot id>/availability'
+```
+
+### Reserve Time Slot
+Get the `movie id` and `time slot id` from the `List All Movies` endpoint 
+
+```
+curl --location --request PUT 'localhost:8000/v1/movies/666721a9d2ff845183a41987/timeslots/666721a9d2ff845183a41988/reserve' \
+--header 'Content-Type: application/json' \
+--data '{
+    "numberOfPeople": 10
+}'
+```
