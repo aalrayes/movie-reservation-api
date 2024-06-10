@@ -13,7 +13,7 @@ async function seedDB() {
           capacity: 30,
         },
         {
-          time: DateTime.now().minus({ hours: 2 }).toISO(),
+          time: DateTime.now().toISO(),
           capacity: 30,
         },
         {
