@@ -4,7 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const rateLimiter = require("./middleware/rateLimiter.js");
-const errorMiddleware = require("./middleware/errorHandler.js");
+const errorMiddleware = require("./middleware/error.js");
 const connectDB = require("./db/connect.js");
 const movieRoutes = require("./routes/movieRoutes.js");
 const app = express();
@@ -19,7 +19,6 @@ app.use(errorMiddleware);
 
 
 app.use(movieRoutes);
-
 app.get('*', (req, res, next) =>{
   res.status(404).json({
     type: 'Resource Not Found',
