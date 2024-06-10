@@ -131,10 +131,10 @@ const validateReservationRequest = (movieId, timeSlotId, numberOfPeople) => {
   if (!isValidObjectId(timeSlotId)) {
     return "Invalid time slot id format";
   }
-  if (isNaN(numberOfPeople)) {
-    return "numberOfPeople is required and should be numeric";
+  if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+    return "numberOfPeople is required and should be a positive integer";
   }
-  
+
   return null;
 };
 
