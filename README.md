@@ -56,7 +56,7 @@ curl --location 'localhost:8000/v1/movies/<movie id>/timeslots/<time slot id>/av
 Get the `movie id` and `time slot id` from the `List All Movies` endpoint 
 
 ```
-curl --location --request PUT 'localhost:8000/v1/movies/666721a9d2ff845183a41987/timeslots/666721a9d2ff845183a41988/reserve' \
+curl --location --request PUT 'localhost:8000/v1/movies/<movie id>/timeslots/<time slot id>/reserve' \
 --header 'Content-Type: application/json' \
 --data '{
     "numberOfPeople": 10
