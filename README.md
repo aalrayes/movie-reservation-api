@@ -25,18 +25,27 @@ The endpoint should take the movie ID, time slot ID, and the number of people to
 ## Before Starting 
 
 - Install Node js 
-- Install mongodb community edition or open an account in MongoDB Atlas
-- install depenancies, go to the root folder and type 
+- Install the MongoDB community edition or open an account in MongoDB Atlas > create a free tier db and get the connection string 
+- install dependencies, go to the root folder, and type 
 ```
 npm install 
 ```
 
-- Create a `.env` file at the root directury and add the URI to your mongo db instance 
+- Create a `.env` file at the root directory and add the URI to your mongo db instance 
 ```
 DB_URI = 
 ```
 ## Getting Started
-Run the server with `node ./server.js`
+Run the server with `npm run start`
+
+You will see the following in the console:
+
+```
+::: server started on port 8000 :::
+::: Connected to the database successfully :::
+```
+
+| for ease of use, I made a `seed` function that will drop the collection and instantiate new Data each time the server starts
 
 ## Endpoints
 
