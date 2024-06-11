@@ -72,7 +72,7 @@ curl --location --request PUT 'localhost:8000/v1/movies/<movie id>/timeslots/<ti
 }'
 ```
 
-### testing 
+### Testing 
 ```
 npm run test
 ```
