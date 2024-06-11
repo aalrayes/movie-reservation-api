@@ -26,7 +26,7 @@ async function seedDB() {
     movies.push(movie);
   }
 
-  Movie.collection.drop();
+  await Movie.collection.drop();
   await Movie.insertMany(movies);
 }
 
