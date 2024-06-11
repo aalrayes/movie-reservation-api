@@ -47,7 +47,7 @@ You will see the following in the console:
 
 | for ease of use, I made a `seed` function that will drop the collection and instantiate new Data each time the server starts
 
-## Endpoints
+## Usage
 
 ### List All Movies
 ```
@@ -70,4 +70,9 @@ curl --location --request PUT 'localhost:8000/v1/movies/<movie id>/timeslots/<ti
 --data '{
     "numberOfPeople": 10
 }'
+```
+
+### testing 
+```
+npm run test
 ```
