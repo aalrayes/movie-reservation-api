@@ -6,8 +6,11 @@ import bodyParser from "body-parser";
 import rateLimiter from "./middleware/rateLimitMiddleware.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 import movieRoutes from "./routes/movieRoutes.js";
+import morgan from "morgan";
+
 const app = express();
 
+app.use(morgan("combined"));
 app.use(compression());
 app.use(cors());
 app.use(helmet());

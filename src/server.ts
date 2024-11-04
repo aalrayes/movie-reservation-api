@@ -1,8 +1,9 @@
-const app = require("./app");
-const connectDB = require("./db/connect.js");
+import app from "./app.js";
+import connectDB from "./db/connect.js";
+import config from "./config.js";
 
 connectDB();
 
-app.listen(8000, ()=>{
-  console.log(`::: server started on port 8000 :::`)
+app.listen(config.port, ()=>{
+  console.log(`::: server started on port ${config.port} :::`)
 })

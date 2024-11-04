@@ -2,10 +2,11 @@
   "name": "movie-reservation-api",
   "version": "1.0.0",
   "description": "a movie reservation api",
-  "main": "./server.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/server.js",
+    "start": "npm run build && node ./dist/server.js",
+    "build": "rm -rf dist && tsc",
     "dev": "nodemon ./src/server.js",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -36,6 +37,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/luxon": "^3.4.2",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.8.7",
     "eslint": "^9.4.0",
     "globals": "^15.4.0",

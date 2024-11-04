@@ -1,125 +1,49 @@
-import MovieService from "../services/movieService";
+import MovieService from "../services/movieService.js";
+import { Request, Response, NextFunction } from "express";
 
-const Movie = require("../models/movie.js");
-const { isValidObjectId } = require("mongoose");
-const { DateTime } = require("luxon");
-
-const listMovies = async (req, res, next) => {
-  let movies = [];
+const listMovies = async (req: Request, res: Response, next: NextFunction) => {
+  let page = parseInt(req.query.page as string);
+  let limit = parseInt(req.query.limit as string);
+  
   try {
-    movies = await Movie.find();
-    res.status(200).json(movies);
+    const { movies, pagination } = await MovieService.fetchMovies(page, limit);
+    res.status(200).json({ movies, pagination });
   } catch (error) {
     next(error);
   }
 };
 
-const checkAvailability = async (req, res, next) => {
-  const { movieId, timeSlotId } = validreq.params;
+const getMovieById = async (req: Request, res: Response, next: NextFunction) => {
+  const { movieId } = req.params
   try {
-    const timeSlot = await MovieService.checkAvailability(movieId, timeSlotId);
-    res.status(200).json({ remainingCapacity: timeSlot.capacity - timeSlot.booked });
+    const movie = await MovieService.getMovieById(movieId);
+    res.status(200).json(movie);
+  } catch (error) {
+    next(error);
+  }
+}
+
+const checkAvailability = async (req: Request, res: Response, next: NextFunction) => {
+  const { movieId, timeSlotId } = req.params;
+  try {
+    const remainingCapacity = await MovieService.getRemainingCapacity(movieId, timeSlotId);
+    res.status(200).json({ remainingCapacity });
   } catch (error) {
     next(error);
   }
 };
 
-const reserveTimeSlot = async (req, res, next) => {
+const reserveTimeSlot = async (req: Request, res: Response, next: NextFunction) => {
   const { movieId, timeSlotId } = req.params;
   const { numberOfPeople } = req.body;
 
-  const validationError = validateReservationRequest(
-    movieId,
-    timeSlotId,
-    numberOfPeople
-  );
-
-  if (validationError) {
-    return res
-      .status(400)
-      .json({ type: "Client Error", message: validationError });
-  }
-
   try {
-    const movie = await Movie.findById(movieId);
-    if (!movie) {
-      return res
-        .status(404)
-        .json({
-          type: "Resource Not Found",
-          message: `Could not find the movie with the id: ${movieId}`,
-        });
-    }
-
-    const timeSlot = movie.timeSlots.id(timeSlotId);
-    if (!timeSlot) {
-      return res
-        .status(404)
-        .json({
-          type: "Resource Not Found",
-          message: `Could not find the time slot with the id: ${timeSlotId}`,
-        });
-    }
-
-    const currentTime = new Date().getTime();
-    const movieTime = new Date(timeSlot.time).getTime();
-
-    if (currentTime > movieTime) {
-      return res.status(400).json({
-        type: "Client Error",
-        message: `Sorry the reservation window for this movie is closed, please checkout other time slots`,
-      });
-    }
-
-    let remainingCapacity = timeSlot.capacity - timeSlot.booked;
-    if (remainingCapacity < numberOfPeople) {
-      return res.status(409).json({
-        type: "Client Error",
-        message: `${numberOfPeople} exceeds the available capacity: ${timeSlot.capacity}`,
-      });
-    }
-
-    timeSlot.booked += Number(numberOfPeople);
-
-    const formattedTime = timeSlot.time.toLocaleString(DateTime.DATETIME_FULL);
-    if (!(await movie.save())) {
-      return res
-        .status(500)
-        .json({
-          type: "Internal Server Error",
-          message: `Could not reserve the ${formattedTime} time slot, please try again latter`,
-        });
-    }
-
-    res.json({ message: `Movie booked successfully` });
+    const reservation = await MovieService.bookTicket(movieId, timeSlotId, numberOfPeople);
+    res.status(201).json(reservation);
   } catch (error) {
     next(error);
   }
 };
 
-const validateReservationRequest = (movieId, timeSlotId, numberOfPeople) => {
-  if (!isValidObjectId(movieId)) {
-    return "Invalid movie id format";
-  }
-  if (!isValidObjectId(timeSlotId)) {
-    return "Invalid time slot id format";
-  }
-  if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
-    return "numberOfPeople is required and should be a positive integer";
-  }
-
-  return null;
-};
-
-const validateAvailablityRequest = (movieId, timeSlotId) => {
-  if (!isValidObjectId(movieId)) {
-    return "Invalid movie id format";
-  }
-  if (!isValidObjectId(timeSlotId)) {
-    return "Invalid time slot id format";
-  }
-
-  return null;
-};
 
 export default { listMovies, checkAvailability, reserveTimeSlot };

@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
-import config from "../config.js";    
+import config from  "../config.js"
 import seedDB from "./seed.js";
 
 
 const connectDB = async () => {
-  const uri = config.dbUri;
+  try {
+    const uri = config.dbUri;
+    if (!uri) {
+    throw new Error("Database URI is not defined");
+  }
+  
   mongoose
     .connect(uri)
     .then(() => {
@@ -12,6 +17,9 @@ const connectDB = async () => {
       seedDB();
     })
     .catch((error) => console.log(error));
+  } catch (error) {
+    console.error("::: Failed to connect to the database :::", error);
+  }
 };
 
-module.exports = connectDB;
+export default connectDB;
