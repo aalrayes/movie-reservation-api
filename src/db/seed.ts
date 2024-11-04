@@ -1,5 +1,5 @@
-const { DateTime } = require("luxon");
-const Movie = require("../models/movie.js");
+import { DateTime } from "luxon";
+import Movie from "../models/movie.js";
 
 async function seedDB() {
   let movies = [];
@@ -30,4 +30,4 @@ async function seedDB() {
   await Movie.insertMany(movies);
 }
 
-module.exports = seedDB;
+export default seedDB;

@@ -1,11 +1,11 @@
-const express = require("express");
-const compression = require("compression");
-const cors = require("cors");
-const helmet = require("helmet");
-const bodyParser = require("body-parser");
-const rateLimiter = require("./middleware/rateLimiter.js");
-const errorMiddleware = require("./middleware/error.js");
-const movieRoutes = require("./routes/movieRoutes.js");
+import express from "express";
+import compression from "compression";
+import cors from "cors";
+import helmet from "helmet";
+import bodyParser from "body-parser";
+import rateLimiter from "./middleware/rateLimitMiddleware.js";
+import errorMiddleware from "./middleware/errorMiddleware.js";
+import movieRoutes from "./routes/movieRoutes.js";
 const app = express();
 
 app.use(compression());
@@ -26,4 +26,4 @@ app.get('*', (req, res, next) =>{
 })
 
 
-module.exports = app;
+export default app;

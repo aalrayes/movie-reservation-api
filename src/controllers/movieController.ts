@@ -1,51 +1,24 @@
+import MovieService from "../services/movieService";
+
 const Movie = require("../models/movie.js");
 const { isValidObjectId } = require("mongoose");
 const { DateTime } = require("luxon");
 
 const listMovies = async (req, res, next) => {
   let movies = [];
-
   try {
     movies = await Movie.find();
-    res.json(movies);
+    res.status(200).json(movies);
   } catch (error) {
     next(error);
   }
 };
 
 const checkAvailability = async (req, res, next) => {
-  const { movieId, timeSlotId } = req.params;
-
-  const validationError = validateAvailablityRequest(movieId, timeSlotId);
-
-  if (validationError) {
-    return res
-      .status(400)
-      .json({ type: "Client Error", message: validationError });
-  }
-
+  const { movieId, timeSlotId } = validreq.params;
   try {
-    const movie = await Movie.findById(movieId);
-    if (!movie) {
-      return res
-        .status(404)
-        .json({
-          type: "Resource Not Found",
-          message: `Could not find the movie with the id: ${movieId}`,
-        });
-    }
-
-    const timeSlot = movie.timeSlots.id(timeSlotId);
-    if (!timeSlot) {
-      return res
-        .status(404)
-        .json({
-          type: "Resource Not Found",
-          message: `Could not find the time slot with the id: ${timeSlotId}`,
-        });
-    }
-
-    res.json({ remainingCapacity: timeSlot.capacity - timeSlot.booked });
+    const timeSlot = await MovieService.checkAvailability(movieId, timeSlotId);
+    res.status(200).json({ remainingCapacity: timeSlot.capacity - timeSlot.booked });
   } catch (error) {
     next(error);
   }
@@ -149,8 +122,4 @@ const validateAvailablityRequest = (movieId, timeSlotId) => {
   return null;
 };
 
-module.exports = {
-  listMovies,
-  checkAvailability,
-  reserveTimeSlot,
-};
+export default { listMovies, checkAvailability, reserveTimeSlot };

@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const seedDB = require("./seed.js");
+import mongoose from "mongoose";
+import config from "../config.js";    
+import seedDB from "./seed.js";
 
-dotenv.config();
 
 const connectDB = async () => {
-  const uri = process.env.DB_URI;
+  const uri = config.dbUri;
   mongoose
     .connect(uri)
     .then(() => {
