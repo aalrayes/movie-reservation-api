@@ -17,16 +17,16 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rateLimiter);
-app.use(errorMiddleware);
-
 
 app.use(movieRoutes);
-app.get('*', (req, res, next) =>{
+app.all('*', (req, res, next) =>{
   res.status(404).json({
-    type: 'Resource Not Found',
-    message: "Could not find the specified path you're looking for"
+    message: 'Resource Not Found',
+    errors: "Could not find the specified path you're looking for"
   })
 })
+
+app.use(errorMiddleware);
 
 
 export default app;

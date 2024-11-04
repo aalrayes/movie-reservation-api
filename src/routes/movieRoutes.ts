@@ -13,7 +13,7 @@ router.get(
 );
 router.put(
   "/api/v1/movies/:movieId/timeslots/:timeSlotId/reserve",
-  validate(reservationSchema),
+  validate(checkAvailabilitySchema, reservationSchema),
   movieController.reserveTimeSlot
 );
 
